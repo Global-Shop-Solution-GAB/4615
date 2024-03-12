@@ -1,0 +1,369 @@
+Program.Sub.ScreenSU.Start
+Gui.frmPayroll..create
+Gui.frmPayroll..caption("Payroll Export")
+Gui.frmPayroll..size(5100,3675)
+Gui.frmPayroll..minx(0)
+Gui.frmPayroll..miny(0)
+Gui.frmPayroll..position(0,0)
+Gui.frmPayroll..event(UnLoad,frmPayroll_UnLoad)
+Gui.frmPayroll..forecolor(0)
+Gui.frmPayroll..fontstyle()
+Gui.frmPayroll..BackColor(-2147483633)
+Gui.frmPayroll..maxbutton(False)
+Gui.frmPayroll..minbutton(False)
+Gui.frmPayroll..mousepointer(0)
+Gui.frmPayroll..sizeable(False)
+Gui.frmPayroll.lblBegDate.create(label,"Beginning Date",True,1935,255,1,200,1565,True,0,Arial,8,-2147483633,0)
+Gui.frmPayroll.lblBegDate.defaultvalue("")
+Gui.frmPayroll.lblEndingDate.create(label,"Ending Date",True,1935,255,1,2100,1590,True,0,Arial,8,-2147483633,0)
+Gui.frmPayroll.lblEndingDate.defaultvalue("")
+Gui.frmPayroll.dpbegdate.create(datepicker)
+Gui.frmPayroll.dpbegdate.size(1380,285)
+Gui.frmPayroll.dpbegdate.position(200,1890)
+Gui.frmPayroll.dpbegdate.defaultvalue("")
+Gui.frmPayroll.dpendingdate.create(datepicker)
+Gui.frmPayroll.dpendingdate.size(1380,285)
+Gui.frmPayroll.dpendingdate.position(2100,1890)
+Gui.frmPayroll.dpendingdate.defaultvalue("")
+Gui.frmPayroll.cmdOk.create(button)
+Gui.frmPayroll.cmdOk.caption("Ok")
+Gui.frmPayroll.cmdOk.size(855,375)
+Gui.frmPayroll.cmdOk.position(195,2535)
+Gui.frmPayroll.cmdOk.event(Click,cmdOk_Click)
+Gui.frmPayroll.cmdOk.defaultvalue("")
+Gui.frmPayroll.lblBegEmp.create(label,"Beginning Employee",True,1935,255,1,200,200,True,0,Arial,8,-2147483633,0)
+Gui.frmPayroll.lblBegEmp.defaultvalue("")
+Gui.frmPayroll.lblEndEmp.create(label,"Ending Employee",True,1935,255,1,2625,200,True,0,Arial,8,-2147483633,0)
+Gui.frmPayroll.lblEndEmp.defaultvalue("")
+Gui.frmPayroll.cmdBegEmpBrwse.create(button)
+Gui.frmPayroll.cmdBegEmpBrwse.caption("^")
+Gui.frmPayroll.cmdBegEmpBrwse.size(495,300)
+Gui.frmPayroll.cmdBegEmpBrwse.position(1830,525)
+Gui.frmPayroll.cmdBegEmpBrwse.event(Click,cmdBegEmpBrwse_Click)
+Gui.frmPayroll.cmdBegEmpBrwse.defaultvalue("")
+Gui.frmPayroll.cmdEndEmpBrws.create(button)
+Gui.frmPayroll.cmdEndEmpBrws.caption("^")
+Gui.frmPayroll.cmdEndEmpBrws.size(495,300)
+Gui.frmPayroll.cmdEndEmpBrws.position(4200,525)
+Gui.frmPayroll.cmdEndEmpBrws.event(Click,cmdEndEmpBrws_Click)
+Gui.frmPayroll.cmdEndEmpBrws.defaultvalue("")
+Gui.frmPayroll.txtBegEmp.create(textbox,"",True,1485,300,0,200,530,True,0,Arial,8,-2147483643,1)
+Gui.frmPayroll.txtBegEmp.defaultvalue("")
+Gui.frmPayroll.chkAllEmp.create(checkbox)
+Gui.frmPayroll.chkAllEmp.caption("All Employees")
+Gui.frmPayroll.chkAllEmp.size(1935,255)
+Gui.frmPayroll.chkAllEmp.position(195,1050)
+Gui.frmPayroll.chkAllEmp.event(Click,chkAllEmp_Click)
+Gui.frmPayroll.chkAllEmp.defaultvalue("")
+Gui.frmPayroll.txtendemp.create(textbox,"",True,1485,300,0,2595,525,True,0,Arial,8,-2147483643,1)
+Gui.frmPayroll.txtendemp.defaultvalue("")
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+'open connection
+F.odbc.Connection!con.OpenConnection(V.Ambient.PDSN,V.Ambient.PUser,V.Ambient.PPass,72000)
+
+'make the form visible
+Gui.frmPayroll..Show 
+
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_2730_InsRpt.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.Main.End
+
+Program.Sub.frmPayroll_UnLoad.Start
+F.Intrinsic.Control.SetErrorHandler("ScreenSU_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+'close connection to the database
+F.ODBC.Connection!con.Close
+
+'end the program
+F.Intrinsic.Control.End
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("ScreenSU_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_2730_InsRpt.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.frmPayroll_UnLoad.End
+
+Program.Sub.cmdBegEmpBrwse_Click.Start
+F.Intrinsic.Control.SetErrorHandler("frmPayroll_UnLoad_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+
+V.Local.sret.Declare(String)
+
+F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+
+
+'launch employee browser
+F.Intrinsic.UI.Browser(51,"Select an Employee",V.Local.sret)
+F.Intrinsic.Control.If(V.Local.sret,=,"***CANCEL***")
+	F.Intrinsic.UI.Msgbox("No employee was selected")
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.Else
+	F.Intrinsic.String.Split(V.Local.sret,"*!*",V.Local.sret)
+	'set the textboxes as the employee selected
+	Gui.frmPayroll.txtBegEmp.Text(V.Local.sret(0))
+	Gui.frmPayroll.txtendemp.Text(V.Local.sret(0))
+
+F.Intrinsic.Control.EndIf
+
+'uncheck the all employees checkbox
+Gui.frmPayroll.chkAllEmp.Value(0)
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("frmPayroll_UnLoad_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_2730_InsRpt.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.cmdBegEmpBrwse_Click.End
+
+Program.Sub.cmdEndEmpBrws_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmdBegEmpBrwse_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sret.Declare(String)
+F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+
+'launch employee browser
+F.Intrinsic.UI.Browser(51,"Select an Employee",V.Local.sret)
+F.Intrinsic.Control.If(V.Local.sret,=,"***CANCEL***")
+	F.Intrinsic.UI.Msgbox("No employee was selected")
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.Else
+	F.Intrinsic.String.Split(V.Local.sret,"*!*",V.Local.sret)
+	'set the textboxes as the employee selected
+	Gui.frmPayroll.txtendemp.Text(V.Local.sret(0))
+F.Intrinsic.Control.EndIf
+
+'uncheck the all employees checkbox
+Gui.frmPayroll.chkAllEmp.Value(0)
+
+
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdBegEmpBrwse_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_2730_InsRpt.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.cmdEndEmpBrws_Click.End
+
+Program.Sub.cmdOk_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmdEndEmpBrws_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.local.ssql.Declare(String)
+V.Local.dtbegdate.Declare(date)
+V.Local.dtenddate.Declare(date)
+V.local.iBiRunID.Declare(long)
+V.local.iBILogID.Declare(long)
+V.Local.sRet.Declare(String)
+V.Local.sParams.Declare(String)
+V.Local.sValues.Declare(String)
+V.Local.iRet.Declare(long)
+
+F.Intrinsic.Control.If(V.Screen.frmPayroll!chkAllEmp.Value,=,0)
+	F.Intrinsic.Control.If(V.screen.frmPayroll!txtBegEmp.text,=,"")
+		f.Intrinsic.UI.Msgbox("Please select employee")
+		gui.frmPayroll.txtBegEmp.SetFocus 
+		f.Intrinsic.Control.Exitsub
+	F.Intrinsic.Control.ElseIf(V.screen.frmPayroll!txtendemp.text,=,"")
+		f.Intrinsic.UI.Msgbox("Please select employee")
+		gui.frmPayroll.txtendemp.SetFocus 
+		f.Intrinsic.Control.Exitsub
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+
+Function.Intrinsic.Control.BlockEvents
+Function.Intrinsic.UI.InvokeWaitDialog("Printing in progress please wait ...")
+
+
+'set local variables as the dates selected
+V.Local.dtbegdate.Set(V.Screen.frmPayroll!dpbegdate.Value)
+V.Local.dtenddate.Set(V.Screen.frmPayroll!dpendingdate.Value)
+
+
+
+F.Global.BI.GetRunID(V.local.iBIRunID)
+
+F.Intrinsic.Control.If(V.Ambient.IsInIDE,=,True)
+	F.Global.BI.StartLogging(V.local.iBiRunID,100025,0,"",V.local.iBILogID)
+F.Intrinsic.Control.Else
+       F.Global.BI.StartLogging(V.local.iBiRunID,-1,-1,"",V.local.iBILogID)
+F.Intrinsic.Control.EndIf
+
+'F.Intrinsic.Control.If(V.Screen.frmPayroll!chkAllEmp.Value,=,1)
+'	F.Intrinsic.String.Build("Select * from v_pay_hist_earn where DATE_HISTORY between '{0}' and '{1}'  order by  DATE_HISTORY",V.Local.dtbegdate.PervasiveDate,V.Local.dtenddate.PervasiveDate,V.Local.ssql)
+'F.Intrinsic.Control.Else
+'	F.Intrinsic.String.Build(" Select *  from v_pay_hist_earn where DATE_HISTORY between '{0}' and '{1}' and EMPLOYEE between '{2}' and '{3}'  order by  DATE_HISTORY",V.Local.dtbegdate.PervasiveDate,V.Local.dtenddate.PervasiveDate,V.screen.frmPayroll!txtBegEmp.text,V.screen.frmPayroll!txtendemp.text,V.Local.ssql)
+'F.Intrinsic.Control.EndIf
+'
+'F.Intrinsic.Debug.InvokeDebugger
+'F.Intrinsic.Debug.Stop
+
+f.Intrinsic.String.Build(" delete from GCG_4615_Insrpt where TrmlID = {0}",v.Caller.Terminal,v.Local.ssql)
+F.ODBC.Connection!con.Execute(V.Local.ssql)
+'
+'v.Local.ssql.set("Insert Into GCG_4615_Insrpt ")
+'f.Intrinsic.String.Build(" {0} (select Earn.Employee as Employee,Earn.Date_History as Date_History,",v.Local.ssql,v.Local.ssql)
+'f.Intrinsic.String.Build(" {0} DEPT_1,EARNINGS,HOURS_R_1+HOURS_R_2+HOURS_R_3 as RegHrs,",v.Local.ssql,v.Local.ssql)
+'f.Intrinsic.String.Build(" {0} CASE WHEN EARNINGS = '01'  THEN  HOURS_O_1+HOURS_O_2+HOURS_O_3 else 0 End AS OTHrs , ",v.Local.ssql,v.Local.ssql)
+'f.Intrinsic.String.Build(" {0} if( EARNINGS = '01' ,REG_DOLLARS_1+REG_DOLLARS_2+REG_DOLLARS_3 , 0)  AS RegWages,",v.Local.ssql,v.Local.ssql)
+'f.Intrinsic.String.Build(" {0} OT_DOLLARS_1+OT_DOLLARS_2+OT_DOLLARS_3 AS OTWages,",v.Local.ssql,v.Local.ssql)
+'f.Intrinsic.String.Build(" {0} if( EARNINGS > '03' ,REG_DOLLARS_1+REG_DOLLARS_21+REG_DOLLARS_2 , 0)  AS Bonus,",v.Local.ssql,v.Local.ssql)
+'f.Intrinsic.String.Build(" {0} DEDUCT_1+DEDUCT_2+DEDUCT_3+DEDUCT_4+DEDUCT_5+DEDUCT_6+DEDUCT_7+DEDUCT_8+DEDUCT_9+DEDUCT_10+DEDUCT_11+DEDUCT_12+DEDUCT_13+DEDUCT_14+DEDUCT_15+DEDUCT_16+DEDUCT_17",v.Local.ssql,v.Local.ssql)
+'f.Intrinsic.String.Build(" {0} +DEDUCT_18+DEDUCT_19+DEDUCT_20+DEDUCT_21+DEDUCT_22+PRE_TAX_DEDUCT_1+PRE_TAX_DEDUCT_2+PRE_TAX_DEDUCT_3+PRE_TAX_DEDUCT_4+PRE_TAX_DEDUCT_5+PRE_TAX_DEDUCT_6",v.Local.ssql,v.Local.ssql)
+'f.Intrinsic.String.Build(" {0} +PRE_TAX_DEDUCT_7+PRE_TAX_DEDUCT_8+PRE_TAX_DEDUCT_9+PRE_TAX_DEDUCT_10+GARN_1+GARN_2+GARN_3+GARN_4+GARN_5 as Ded1,FEDERAL + FICA + MEDI as Ded2,",v.Local.ssql,v.Local.ssql)
+'f.Intrinsic.String.Build(" {0} LOCAL_1  + LOCAL_2 as Ded3,{1} from v_pay_hist_earn EARN left join V_PAY_HIST_DED DED on EARN.Employee = DED.Employee and EARN.Date_History = DED.Date_History",v.Local.ssql,v.Caller.Terminal,v.Local.ssql)
+
+'F.Intrinsic.Control.If(V.Screen.frmPayroll!chkAllEmp.Value,=,1)
+'	F.Intrinsic.String.Build("{0} where Earn.DATE_HISTORY between '{1}' and '{2}') ",V.Local.ssql,V.Local.dtbegdate.PervasiveDate,V.Local.dtenddate.PervasiveDate,V.Local.ssql)
+'F.Intrinsic.Control.Else
+'	F.Intrinsic.String.Build("{0} where Earn.DATE_HISTORY between '{1}' and '{2}' and Earn.EMPLOYEE between '{3}' and '{4}')",V.Local.ssql,V.Local.dtbegdate.PervasiveDate,V.Local.dtenddate.PervasiveDate,V.screen.frmPayroll!txtBegEmp.text,V.screen.frmPayroll!txtendemp.text,V.Local.ssql)
+'F.Intrinsic.Control.EndIf
+
+v.Local.sSql.Set("select Employee,Date_History,")
+f.Intrinsic.String.Build("{0} sum(DEDUCT_1+DEDUCT_2+DEDUCT_3+DEDUCT_4+",v.Local.sSql,v.Local.sSql)
+f.Intrinsic.String.Build(" {0} DEDUCT_5+DEDUCT_6+DEDUCT_7+DEDUCT_8+DEDUCT_9+DEDUCT_10+DEDUCT_11+DEDUCT_12+DEDUCT_13+DEDUCT_14+DEDUCT_15+DEDUCT_16+DEDUCT_17 +DEDUCT_18+DEDUCT_19+DEDUCT_20+",v.Local.sSql,v.Local.sSql)
+f.Intrinsic.String.Build(" {0} DEDUCT_21+DEDUCT_22+PRE_TAX_DEDUCT_1+PRE_TAX_DEDUCT_2+PRE_TAX_DEDUCT_3+PRE_TAX_DEDUCT_4+PRE_TAX_DEDUCT_5+PRE_TAX_DEDUCT_6 +PRE_TAX_DEDUCT_7+PRE_TAX_DEDUCT_8+",v.Local.sSql,v.Local.sSql)
+f.Intrinsic.String.Build(" {0} PRE_TAX_DEDUCT_9+PRE_TAX_DEDUCT_10+GARN_1+GARN_2+GARN_3+GARN_4+GARN_5) as Ded1,",v.Local.sSql,v.Local.sSql)
+f.Intrinsic.String.Build(" {0} sum(FEDERAL + FICA + MEDI) as Ded2, sum(LOCAL_1  + LOCAL_2) as Ded3,{1} as TrmlID",v.Local.sSql,v.Caller.Terminal,v.Local.sSql)
+f.Intrinsic.String.Build(" {0} from V_PAY_HIST_DED",v.Local.sSql,v.Local.sSql)
+
+F.Intrinsic.Control.If(V.Screen.frmPayroll!chkAllEmp.Value,=,1)
+	F.Intrinsic.String.Build("{0} where DATE_HISTORY between '{1}' and '{2}' group by Employee,Date_History",V.Local.ssql,V.Local.dtbegdate.PervasiveDate,V.Local.dtenddate.PervasiveDate,V.Local.ssql)
+F.Intrinsic.Control.Else
+	F.Intrinsic.String.Build("{0} where DATE_HISTORY between '{1}' and '{2}' and Earn.EMPLOYEE between '{3}' and '{4}' group by Employee,Date_History",V.Local.ssql,V.Local.dtbegdate.PervasiveDate,V.Local.dtenddate.PervasiveDate,V.screen.frmPayroll!txtBegEmp.text,V.screen.frmPayroll!txtendemp.text,V.Local.ssql)
+F.Intrinsic.Control.EndIf
+
+f.Data.DataTable.CreateFromSQL("DT","Con",V.Local.sSql)
+
+v.Local.sSql.Set("select Employee,Date_History,Earnings,sum(HOURS_R_1+HOURS_R_2+HOURS_R_3) as RegHrs,")
+f.Intrinsic.String.Build("{0} if( EARNINGS = '01' , sum(HOURS_O_1+HOURS_O_2+HOURS_O_3) , 0)  AS OTHrs,",v.Local.sSql,v.Local.sSql)
+f.Intrinsic.String.Build("{0} if( EARNINGS = '01' ,sum(REG_DOLLARS_1+REG_DOLLARS_2+REG_DOLLARS_3) , 0)  AS RegWages,",v.Local.sSql,v.Local.sSql)
+f.Intrinsic.String.Build("{0} sum(OT_DOLLARS_1+OT_DOLLARS_2+OT_DOLLARS_3) AS OTWages,",v.Local.sSql,v.Local.sSql)
+f.Intrinsic.String.Build("{0} if( EARNINGS > '03' ,sum(REG_DOLLARS_1+REG_DOLLARS_2+REG_DOLLARS_3) , 0)  AS Bonus",v.Local.sSql,v.Local.sSql)
+f.Intrinsic.String.Build("{0} from v_pay_hist_earn ",v.Local.sSql,v.Local.sSql)
+
+F.Intrinsic.Control.If(V.Screen.frmPayroll!chkAllEmp.Value,=,1)
+	F.Intrinsic.String.Build("{0} where DATE_HISTORY between '{1}' and '{2}' group by Employee,Date_History,Earnings",V.Local.ssql,V.Local.dtbegdate.PervasiveDate,V.Local.dtenddate.PervasiveDate,V.Local.ssql)
+F.Intrinsic.Control.Else
+	F.Intrinsic.String.Build("{0} where DATE_HISTORY between '{1}' and '{2}' and Earn.EMPLOYEE between '{3}' and '{4}' group by Employee,Date_History,Earnings",V.Local.ssql,V.Local.dtbegdate.PervasiveDate,V.Local.dtenddate.PervasiveDate,V.screen.frmPayroll!txtBegEmp.text,V.screen.frmPayroll!txtendemp.text,V.Local.ssql)
+F.Intrinsic.Control.EndIf
+
+f.Data.DataTable.CreateFromSQL("DT$DT2","Con",V.Local.sSql)
+
+f.Data.DataTable.AddRelation("DT","Employee*!*Date_History","DT$DT2","Employee*!*Date_History")
+f.Data.DataTable.AddExpressionColumn("DT","RegHrs","Float","sum(Child.RegHrs)")
+f.Data.DataTable.AddExpressionColumn("DT","OTHrs","Float","sum(Child.OTHrs)")
+f.Data.DataTable.AddExpressionColumn("DT","RegWages","Float","sum(Child.RegWages)")
+f.Data.DataTable.AddExpressionColumn("DT","OTWages","Float","sum(Child.OTWages)")
+f.Data.DataTable.AddExpressionColumn("DT","Bonus","Float","sum(Child.Bonus)")
+
+
+F.Intrinsic.Debug.Stop
+
+F.Data.DataTable.SaveToDB("DT","con","GCG_4615_Insrpt","EMPLOYEE*!*Date_History",256,"EMPLOYEE@!@EMPLOYEE*!*Date_History@!@Date_History*!*RegHrs@!@RegHrs*!*OTHrs@!@OTHrs*!*RegWages@!@RegWages*!*OTWages@!@OTWages*!*Bonus@!@Bonus*!*TrmlID@!@TrmlID*!*Ded1@!@Ded1*!*Ded2@!@Ded2*!*Ded3@!@Ded3")
+
+
+F.Data.DataTable.Close("DT$DT2")
+F.Data.DataTable.Close("DT")
+
+
+F.Global.BI.StopLogging(V.local.iBILogID)
+
+
+V.Local.sParams.Set("Daterange*!*Terminal")
+
+F.Intrinsic.String.Build("Date from : {0} to {1}",V.Screen.frmPayroll!dpbegdate.Value,V.Screen.frmPayroll!dpendingdate.Value,V.Local.sRet)
+
+F.Intrinsic.String.Build("{0}*!*{1}",V.Local.sRet,v.Caller.Terminal,V.Local.sValues)
+
+F.Global.BI.RunReportPreProcessor(V.local.iBiRunID,V.local.iBILogID,V.Local.sParams,V.Local.sValues,"",-1,True,"",-1,"",-1,"","",V.Local.iRet)
+
+Function.Intrinsic.UI.CloseWaitDialog
+Function.Intrinsic.Control.UnBlockEvents
+
+f.Intrinsic.Control.CallSub(frmpayroll_unload)
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdEndEmpBrws_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.UI.CloseWaitDialog
+	Function.Intrinsic.String.Concat("Project: GCG_2730_InsRpt.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.cmdOk_Click.End
+
+Program.Sub.chkAllEmp_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmdOk_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+'check to see if the checkbox is checked, if so clear the textboxes
+F.Intrinsic.Control.If(V.Screen.frmPayroll!chkAllEmp.Value,=,1)
+	Gui.frmPayroll.txtBegEmp.Text("")
+	Gui.frmPayroll.txtendemp.Text("")
+F.Intrinsic.Control.EndIf
+
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdOk_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_2730_InsRpt.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.chkAllEmp_Click.End
+
+Program.Sub.Comments.Start
+${$0$}$Open Dashboard$}$RAN$}$5/23/2017 11:30:54 PM$}$False
+${$3$}$0$}$$}$0$}$-1$}$$}$12:00:00 AM$}$This project will run from a custom menu item and will create an Insurance Report.
+Program.Sub.Comments.End
